@@ -1,0 +1,50 @@
+[project]
+name = "trading"
+version = "0.1.0"
+description = "Personal algorithmic trading recommendation engine for Indian and US equities"
+readme = "README.md"
+authors = [
+    { name = "Sourabh Karnani", email = "sourabh.karnani@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "duckdb>=1.1",
+    "pyarrow>=17",
+    "yfinance>=0.2.40",
+    "jugaad-data>=0.27",
+    "pandas-ta>=0.3.14b",
+    "pyyaml>=6",
+    "pydantic>=2.7",
+    "python-dateutil>=2.9",
+    "click>=8.1",
+]
+
+[project.optional-dependencies]
+news = [
+    "feedparser>=6",
+    "newspaper3k>=0.2.8",
+    "anthropic>=0.40",
+]
+backtest = [
+    "vectorbt>=0.26",
+]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[project.scripts]
+trading = "trading.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.11.11,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
