@@ -86,7 +86,7 @@ class BarsStore:
     def close(self) -> None:
         self._conn.close()
 
-    def __enter__(self) -> "BarsStore":
+    def __enter__(self) -> BarsStore:
         return self
 
     def __exit__(self, *_) -> None:

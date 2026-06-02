@@ -77,7 +77,7 @@ def _trade_stats_block(trades: pd.DataFrame) -> list[str]:
         f"- **Avg P&L per trade**: {avg_pnl * 100:.2f}%",
         f"- **Avg win**: {avg_win * 100:.2f}%   **Avg loss**: {avg_loss * 100:.2f}%",
         f"- **Avg holding days**: {avg_hold:.1f}",
-        f"- **Exit reasons**: "
+        "- **Exit reasons**: "
         + ", ".join(f"{k}={v}" for k, v in sorted(by_reason.items())),
         "",
     ]
@@ -141,10 +141,15 @@ def render(
     lines += [
         "## Caveats",
         "",
-        "- **Survivorship bias**: universe is current Nifty 50 names; delisted/dropped names absent.",
-        "- **Costs are a flat bps approximation**, not a precise broker-fee model. Includes brokerage, STT, exchange and stamp duty (~10–25 bps round-trip is realistic for Indian retail equities).",
-        "- **No slippage on illiquid names** — Nifty 50 is generally fine; revisit if universe expands.",
-        "- **No stops/targets** — pure monthly rebalance of top-N. The live recommender adds ATR stops which the backtest does not model.",
+        "- **Survivorship bias**: universe is current Nifty 50 names; "
+        "delisted/dropped names absent.",
+        "- **Costs are a flat bps approximation**, not a precise broker-fee model. "
+        "Includes brokerage, STT, exchange and stamp duty (~10–25 bps round-trip "
+        "is realistic for Indian retail equities).",
+        "- **No slippage on illiquid names** — Nifty 50 is generally fine; "
+        "revisit if universe expands.",
+        "- **No stops/targets** — pure monthly rebalance of top-N. "
+        "The live recommender adds ATR stops which the backtest does not model.",
         "",
     ]
     return "\n".join(lines) + "\n"
@@ -153,5 +158,5 @@ def render(
 def write_report(text: str, reports_dir: Path, slug: str) -> Path:
     reports_dir.mkdir(parents=True, exist_ok=True)
     path = reports_dir / f"backtest_{slug}_{date.today().isoformat()}.md"
-    path.write_text(text)
+    path.write_text(text, encoding="utf-8")
     return path

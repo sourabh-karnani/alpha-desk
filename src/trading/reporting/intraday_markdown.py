@@ -70,5 +70,5 @@ def write_report(text: str, reports_dir: Path, as_of: date | None = None) -> Pat
     reports_dir.mkdir(parents=True, exist_ok=True)
     next_session = as_of + timedelta(days=1)
     path = reports_dir / f"intraday_{next_session.isoformat()}.md"
-    path.write_text(text)
+    path.write_text(text, encoding="utf-8")
     return path

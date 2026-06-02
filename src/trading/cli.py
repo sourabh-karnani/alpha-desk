@@ -76,7 +76,8 @@ def report(universe: str, top_n: int, sizing_mode: str) -> None:
     total_risk = sum(r.risk_inr for r in recs)
     click.echo(f"Wrote {len(recs)} recommendations to {path}")
     click.echo(
-        f"  Total notional: ₹{total_notional:,.0f} ({total_notional / risk.capital_inr * 100:.1f}% of capital)  "
+        f"  Total notional: ₹{total_notional:,.0f} "
+        f"({total_notional / risk.capital_inr * 100:.1f}% of capital)  "
         f"Total risk: ₹{total_risk:,.0f} ({total_risk / risk.capital_inr * 100:.1f}% of capital)"
     )
 
@@ -183,7 +184,13 @@ def backtest(
         ),
     }
     if strategy == "momentum":
-        config.update({"top_n": top_n, "rebalance": "monthly", "n_rebalances": len(result.rebalance_dates or [])})
+        config.update(
+            {
+                "top_n": top_n,
+                "rebalance": "monthly",
+                "n_rebalances": len(result.rebalance_dates or []),
+            }
+        )
     elif strategy == "mean_rev":
         n_trades = 0 if result.trades is None else len(result.trades)
         config.update(

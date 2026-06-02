@@ -144,7 +144,9 @@ def backtest_per_asset(
 
     net_returns = daily_returns - daily_costs
     if not net_returns.empty:
-        first_active = net_returns.ne(0.0).idxmax() if net_returns.ne(0.0).any() else net_returns.index[0]
+        first_active = (
+            net_returns.ne(0.0).idxmax() if net_returns.ne(0.0).any() else net_returns.index[0]
+        )
         net_returns = net_returns.loc[first_active:]
         daily_returns = daily_returns.loc[first_active:]
         daily_costs = daily_costs.loc[first_active:]

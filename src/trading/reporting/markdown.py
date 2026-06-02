@@ -44,5 +44,5 @@ def write_report(text: str, reports_dir: Path, as_of: date | None = None) -> Pat
     as_of = as_of or date.today()
     reports_dir.mkdir(parents=True, exist_ok=True)
     path = reports_dir / f"{as_of.isoformat()}.md"
-    path.write_text(text)
+    path.write_text(text, encoding="utf-8")
     return path

@@ -56,7 +56,10 @@ def annual_breakdown(returns: pd.Series) -> pd.DataFrame:
     returns = returns.dropna()
     if returns.empty:
         return pd.DataFrame(
-            columns=["year", "return", "sharpe", "max_drawdown", "best_month", "worst_month", "n_days"]
+            columns=[
+                "year", "return", "sharpe", "max_drawdown",
+                "best_month", "worst_month", "n_days",
+            ]
         )
 
     rows = []

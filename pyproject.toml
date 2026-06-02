@@ -48,3 +48,11 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# These reporting modules emit literal Markdown (table rows + prose) inside
+# triple-quoted dedent() blocks. Those lines can't be wrapped without breaking
+# Markdown table rows or changing the rendered output, so the line-length rule
+# is intentionally relaxed for them.
+"src/trading/reporting/intraday_markdown.py" = ["E501"]
+"src/trading/reporting/composite_markdown.py" = ["E501"]

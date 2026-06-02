@@ -340,7 +340,9 @@ def _evaluate(ticker: str, bars_g: pd.DataFrame, fund: dict) -> QualityCandidate
     checks = {
         "momentum_positive": momentum > MIN_MOMENTUM,
         "profitable_ttm": (trailing_eps is not None) and (trailing_eps > MIN_TRAILING_EPS),
-        "reasonable_pe": (forward_pe is not None) and (MIN_FORWARD_PE <= forward_pe <= MAX_FORWARD_PE),
+        "reasonable_pe": (
+            (forward_pe is not None) and (MIN_FORWARD_PE <= forward_pe <= MAX_FORWARD_PE)
+        ),
         "above_sma200": close > sma200,
         "not_extended": extension < MAX_EXTENSION,
         "not_overbought": rsi < MAX_RSI,

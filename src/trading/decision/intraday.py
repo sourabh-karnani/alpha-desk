@@ -48,7 +48,8 @@ def build_intraday_watchlist(
       - Volume on the compression day ≥ `min_volume_ratio` × 20d avg volume.
       - Optionally `prefer_inside_day`: Inside Day setups outranked NR7-only in backtest;
         included as a sort key but NR7-only still appears (lower rank).
-    Long setup: enter on break above today's high; stop at today's low; target = breakout + reward × ATR.
+    Long setup: enter on break above today's high; stop at today's low;
+    target = breakout + reward × ATR.
     """
     ideas: list[IntradayIdea] = []
 
@@ -79,8 +80,12 @@ def build_intraday_watchlist(
         short_target = breakdown - reward_atr_multiple * atr
         compression = atr / today_range if today_range > 0 else 0.0
 
-        long_shares = _shares_risk_based(long_stop_dist, risk.capital_inr, risk.risk_per_trade_pct)
-        short_shares = _shares_risk_based(short_stop_dist, risk.capital_inr, risk.risk_per_trade_pct)
+        long_shares = _shares_risk_based(
+            long_stop_dist, risk.capital_inr, risk.risk_per_trade_pct
+        )
+        short_shares = _shares_risk_based(
+            short_stop_dist, risk.capital_inr, risk.risk_per_trade_pct
+        )
 
         setup_parts = []
         if nr7:

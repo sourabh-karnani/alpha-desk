@@ -62,7 +62,8 @@ def render(
 
     table = (
         "## Top picks\n\n"
-        "| # | Ticker | Company | Sector | Close | Mom | P/E | RSI | Ext | **Confidence** | **Why** |\n"
+        "| # | Ticker | Company | Sector | Close | Mom | "
+        "P/E | RSI | Ext | **Confidence** | **Why** |\n"
         "|---|---|---|---|---:|---:|---:|---:|---:|:---:|---|\n"
     )
     for i, p in enumerate(picks, start=1):
@@ -104,9 +105,12 @@ def render(
 
     footer = (
         "\n---\n"
-        "*Not investment advice. Quality filter is a defensive overlay on top of the 12-1 momentum signal — "
-        "it removes loss-makers, bubble-valued names, and extended/overbought charts. It does NOT have its "
-        "own backtested expectancy yet; treat results as discretionary guidance until a quality-aware "
+        "*Not investment advice. Quality filter is a defensive overlay "
+        "on top of the 12-1 momentum signal — "
+        "it removes loss-makers, bubble-valued names, and extended/overbought "
+        "charts. It does NOT have its "
+        "own backtested expectancy yet; treat results as discretionary "
+        "guidance until a quality-aware "
         "backtest validates the exact rules.*\n"
     )
     return header + table + summary + near_section + footer
@@ -116,5 +120,5 @@ def write_report(text: str, reports_dir: Path, slug: str, as_of: date | None = N
     as_of = as_of or date.today()
     reports_dir.mkdir(parents=True, exist_ok=True)
     path = reports_dir / f"quality_{slug}_{as_of.isoformat()}.md"
-    path.write_text(text)
+    path.write_text(text, encoding="utf-8")
     return path
