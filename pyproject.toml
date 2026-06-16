@@ -22,13 +22,16 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# LLM news/event agents (trading.agents). feedparser = RSS headline retrieval,
+# anthropic = the Claude sentiment/event agent. Both are imported lazily so the
+# package works without this extra.
 news = [
     "feedparser>=6",
-    "newspaper3k>=0.2.8",
     "anthropic>=0.40",
 ]
-backtest = [
-    "vectorbt>=0.26",
+# Streamlit dashboard (trading.web). Run: `uv run trading web`.
+web = [
+    "streamlit>=1.36",
 ]
 dev = [
     "pytest>=8",
@@ -56,3 +59,10 @@ select = ["E", "F", "W", "I", "B", "UP"]
 # is intentionally relaxed for them.
 "src/trading/reporting/intraday_markdown.py" = ["E501"]
 "src/trading/reporting/composite_markdown.py" = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    "ignore::DeprecationWarning:pandas_ta",
+]

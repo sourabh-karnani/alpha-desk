@@ -1,3 +1,25 @@
+"""Trading universes.
+
+**Survivorship-bias caveat.** The lists below are the *current* index members.
+Using them for historical backtests overstates returns: names that were dropped
+from an index (often after underperforming) are absent, and names are present
+for the whole history even though they joined the index late. There is no free,
+point-in-time NSE/S&P constituent feed bundled here, so this cannot be fully
+eliminated in-repo.
+
+What we *can* do, and do, is make a run reproducible and honest about its date:
+`snapshot_universe()` freezes the constituents resolved *today* to a dated JSON
+file, and `load_snapshot()` replays exactly that set. A backtest run against a
+snapshot is reproducible and clearly stamped with the membership date it used —
+so when a true point-in-time feed is wired in later, snapshots remain the
+loading mechanism and only the constituent source changes.
+"""
+from __future__ import annotations
+
+import json
+from datetime import date
+from pathlib import Path
+
 NIFTY_50_NSE = [
     "RELIANCE.NS", "TCS.NS", "HDFCBANK.NS", "INFY.NS", "ICICIBANK.NS",
     "BHARTIARTL.NS", "SBIN.NS", "LT.NS", "HINDUNILVR.NS", "ITC.NS",
@@ -50,3 +72,34 @@ def get_universe(name: str = "nifty50") -> list[str]:
     if name == "sp100":
         return list(SP_100_US)
     raise ValueError(f"Unknown universe: {name}")
+
+
+def snapshot_universe(
+    name: str,
+    dest_dir: Path,
+    as_of: date | None = None,
+) -> Path:
+    """Freeze a universe's *current* constituents to a dated JSON snapshot.
+
+    Returns the snapshot path. The file records the membership date so later
+    runs are reproducible and honest about which constituent set they used.
+    """
+    as_of = as_of or date.today()
+    tickers = get_universe(name)
+    dest_dir = Path(dest_dir)
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    path = dest_dir / f"{name}_{as_of.isoformat()}.json"
+    payload = {
+        "name": name,
+        "as_of": as_of.isoformat(),
+        "source": "current-index-members (survivorship-biased; see module docstring)",
+        "tickers": tickers,
+    }
+    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    return path
+
+
+def load_snapshot(path: Path) -> list[str]:
+    """Load the frozen ticker list from a snapshot produced by `snapshot_universe`."""
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    return list(data["tickers"])

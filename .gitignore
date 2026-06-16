@@ -24,10 +24,12 @@ env/
 .DS_Store
 Thumbs.db
 
-# Project data — never commit market data, secrets, or generated reports
-data/
-reports/
-logs/
+# Project data — never commit market data, secrets, or generated reports.
+# Anchored to the repo root so they don't also match the source package
+# `src/trading/data/` (which must be version-controlled).
+/data/
+/reports/
+/logs/
 *.duckdb
 *.duckdb.wal
 *.sqlite
